@@ -51,6 +51,7 @@
     "react-lifecycles-compat": "^3.0.0"
   },
   "devDependencies": {
+    "@rxloop/core": "^0.12.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -101,6 +102,7 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-uglify": "^3.0.0",
+    "rxjs": "^6.3.3",
     "semver": "^5.5.0"
   },
   "browserify": {

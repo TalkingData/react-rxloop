@@ -33,7 +33,7 @@ function match(arg, factories, name) {
   }
 }
 
-function strictEqual(a, b) { return a === b }
+// function strictEqual(a, b) { return a === b }
 
 // createConnect with default args builds the 'official' connect behavior. Calling it with
 // different options opens up some testing and extensibility scenarios
@@ -50,7 +50,7 @@ export function createConnect({
     mergeProps,
     {
       pure = true,
-      areStatesEqual = strictEqual,
+      areStatesEqual = shallowEqual,
       areOwnPropsEqual = shallowEqual,
       areStatePropsEqual = shallowEqual,
       areMergedPropsEqual = shallowEqual,
