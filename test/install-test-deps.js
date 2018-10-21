@@ -78,7 +78,7 @@ readdirSync(join(__dirname, 'react')).forEach(version => {
 
   console.log(`Installing React version ${version}...`);
 
-  const installTask = spawn.sync('npm', ['install'], {
+  const installTask = spawn.sync('yarn', ['install'], {
     cwd,
     stdio: 'inherit',
   });
