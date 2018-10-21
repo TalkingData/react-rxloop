@@ -3,12 +3,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import semver from 'semver'
-import { createStore } from 'redux'
+// import { createStore } from 'redux'
+import createStore from './createStore';
 import { Provider, createProvider, connect } from '../../src/index.js'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
-const createExampleTextReducer = () => (state = "example text") => state;
+// const createExampleTextReducer = () => (state = "example text") => state;
 
 describe('React', () => {
   describe('Provider', () => {
@@ -21,7 +22,7 @@ describe('React', () => {
           let text = '';
           
           if(store) {
-            text = store.getState().toString()
+            text = store.getState('test').toString()
           }
           
           return (
@@ -42,7 +43,7 @@ describe('React', () => {
     const Child = createChild();
 
     it('should enforce a single child', () => {
-      const store = createStore(() => ({}))
+      const store = createStore({}, {})
 
       // Ignore propTypes warnings
       const propTypes = Provider.propTypes
@@ -91,7 +92,11 @@ describe('React', () => {
     })
 
     it('should add the store to the child context', () => {
-      const store = createStore(createExampleTextReducer())
+      const store = createStore({
+        txt(state) {
+          return state;
+        }
+      }, 'example text')
 
       const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
       const tester = rtl.render(
@@ -106,7 +111,11 @@ describe('React', () => {
     })
 
     it('should add the store to the child context using a custom store key', () => {
-        const store = createStore(createExampleTextReducer())
+      const store = createStore({
+        txt(state) {
+          return state;
+        }
+      }, 'example text')
         const CustomProvider = createProvider('customStoreKey');
         const CustomChild = createChild('customStoreKey');
 
@@ -123,9 +132,9 @@ describe('React', () => {
     })
 
     it('should warn once when receiving a new store in props', () => {
-      const store1 = createStore((state = 10) => state + 1)
-      const store2 = createStore((state = 10) => state * 2)
-      const store3 = createStore((state = 10) => state * state)
+      const store1 = createStore({ INC: (state) => state + 1 }, 10);
+      const store2 = createStore({ INC: (state) => state * 2 } , 10);
+      const store3 = createStore({ INC: (state) => state * state }, 10);
 
       let externalSetState
       class ProviderContainer extends Component {
@@ -143,43 +152,52 @@ describe('React', () => {
         }
       }
 
+      store1.dispatch( { type: 'test/INC' });
       const tester = rtl.render(<ProviderContainer />)
       expect(tester.getByTestId('store')).toHaveTextContent('store - 11')
 
       let spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+      store2.dispatch( { type: 'test/INC' });
       externalSetState({ store: store2 })
-      
       expect(tester.getByTestId('store')).toHaveTextContent('store - 11')
       expect(spy).toHaveBeenCalledTimes(1)
-      expect(spy.mock.calls[0][0]).toBe(
-        '<Provider> does not support changing `store` on the fly. ' +
-        'It is most likely that you see this error because you updated to ' +
-        'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' +
-        'automatically. See https://github.com/reduxjs/react-redux/releases/' +
-        'tag/v2.0.0 for the migration instructions.'
-      )
+      // expect(spy.mock.calls[0][0]).toBe(
+      //   '<Provider> does not support changing `store` on the fly. ' +
+      //   'It is most likely that you see this error because you updated to ' +
+      //   'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' +
+      //   'automatically. See https://github.com/reduxjs/react-redux/releases/' +
+      //   'tag/v2.0.0 for the migration instructions.'
+      // )
       spy.mockRestore()
       
       spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+      store3.dispatch( { type: 'test/INC' });
       externalSetState({ store: store3 })
-      
       expect(tester.getByTestId('store')).toHaveTextContent('store - 11')
       expect(spy).toHaveBeenCalledTimes(0)
       spy.mockRestore()
     })
 
     it('should handle subscriptions correctly when there is nested Providers', () => {
-      const reducer = (state = 0, action) => (action.type === 'INC' ? state + 1 : state)
+      // const reducer = (state = 0, action) => (action.type === 'INC' ? state + 1 : state)
 
-      const innerStore = createStore(reducer)
-      const innerMapStateToProps = jest.fn(state => ({ count: state }))
+      const innerStore = createStore({
+        INC(state, action) {
+          return action.type === 'test/INC' ? state + 1 : state
+        }
+      }, 0);
+      const innerMapStateToProps = jest.fn(({ test: state }) => ({ count: state }))
       @connect(innerMapStateToProps)
       class Inner extends Component {
         render() { return <div>{this.props.count}</div> }
       }
 
-      const outerStore = createStore(reducer)
-      @connect(state => ({ count: state }))
+      const outerStore = createStore({
+        INC(state, action) {
+          return action.type === 'test/INC' ? state + 1 : state
+        }
+      }, 0);
+      @connect(({ test: state }) => ({ count: state }))
       class Outer extends Component {
         render() { return <Provider store={innerStore}><Inner /></Provider> }
       }
@@ -187,7 +205,7 @@ describe('React', () => {
       rtl.render(<Provider store={outerStore}><Outer /></Provider>)
       expect(innerMapStateToProps).toHaveBeenCalledTimes(1)
 
-      innerStore.dispatch({ type: 'INC'})
+      innerStore.dispatch({ type: 'test/INC'})
       expect(innerMapStateToProps).toHaveBeenCalledTimes(2)
     })
   })
@@ -199,15 +217,21 @@ describe('React', () => {
         : prev
     }
 
-    const store = createStore(stringBuilder)
+    const store = createStore({
+      APPEND(prev, action) {
+        return action.type === 'test/APPEND'
+          ? prev + action.body
+          : prev
+      }
+    }, '');
 
-    store.dispatch({ type: 'APPEND', body: 'a' })
+    store.dispatch({ type: 'test/APPEND', body: 'a' })
     let childMapStateInvokes = 0
 
-    @connect(state => ({ state }), null, null, { withRef: true })
+    @connect(({ test: state }) => ({ state }), null, null, { withRef: true })
     class Container extends Component {
       emitChange() {
-        store.dispatch({ type: 'APPEND', body: 'b' })
+        store.dispatch({ type: 'test/APPEND', body: 'b' })
       }
 
       render() {
@@ -220,7 +244,7 @@ describe('React', () => {
       }
     }
 
-    @connect((state, parentProps) => {
+    @connect(({ test: state }, parentProps) => {
       childMapStateInvokes++
       // The state from parent props should always be consistent with the current state
       expect(state).toEqual(parentProps.parentState)
@@ -241,7 +265,7 @@ describe('React', () => {
     expect(childMapStateInvokes).toBe(1)
 
     // The store state stays consistent when setState calls are batched
-    store.dispatch({ type: 'APPEND', body: 'c' })
+    store.dispatch({ type: 'test/APPEND', body: 'c' })
     expect(childMapStateInvokes).toBe(2)
 
     // setState calls DOM handlers are batched
@@ -250,7 +274,7 @@ describe('React', () => {
     expect(childMapStateInvokes).toBe(3)
 
     // Provider uses unstable_batchedUpdates() under the hood
-    store.dispatch({ type: 'APPEND', body: 'd' })
+    store.dispatch({ type: 'test/APPEND', body: 'd' })
     expect(childMapStateInvokes).toBe(4)
   })
 
@@ -260,7 +284,7 @@ describe('React', () => {
       return
     }
     const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
-    const store = createStore(() => ({}))
+    const store = createStore({}, {})
 
     rtl.render(
       <React.StrictMode>
