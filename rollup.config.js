@@ -8,13 +8,12 @@ const env = process.env.NODE_ENV
 
 const config = {
   input: 'src/index.js',
-  external: ['react', 'redux'],
+  external: ['react', 'rxjs'],
   output: {
     format: 'umd',
-    name: 'ReactRedux',
+    name: 'ReactRxloop',
     globals: {
-      react: 'React',
-      redux: 'Redux'
+      react: 'React'
     }
   },
   plugins: [

@@ -1,7 +1,7 @@
 {
   "name": "react-rxloop",
   "version": "0.12.0",
-  "description": "Official React bindings for Redux",
+  "description": "Official React bindings for rxloop",
   "keywords": [
     "react",
     "reactjs",
@@ -11,15 +11,15 @@
     "live",
     "edit",
     "flux",
-    "redux"
+    "rxloop"
   ],
   "license": "MIT",
   "author": "Dan Abramov <dan.abramov@me.com> (https://github.com/gaearon)",
-  "homepage": "https://github.com/reduxjs/react-redux",
-  "repository": "github:reduxjs/react-redux",
-  "bugs": "https://github.com/reduxjs/react-redux/issues",
+  "homepage": "https://github.com/TalkingData/react-rxloop",
+  "repository": "git@github.com:TalkingData/react-rxloop.git",
+  "bugs": "https://github.com/TalkingData/react-rxloop/issues",
   "main": "./lib/index.js",
-  "unpkg": "dist/react-redux.js",
+  "unpkg": "dist/react-rxloop.js",
   "module": "es/index.js",
   "files": [
     "dist",
@@ -30,8 +30,8 @@
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
-    "build:umd": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c -o dist/react-redux.js",
-    "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c -o dist/react-redux.min.js",
+    "build:umd": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c -o dist/react-rxloop.js",
+    "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c -o dist/react-rxloop.min.js",
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "clean": "rimraf lib dist es coverage",
     "lint": "eslint src test/utils test/components",
