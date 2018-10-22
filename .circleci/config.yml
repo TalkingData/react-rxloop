@@ -6,6 +6,11 @@ defaults: &defaults
     - image: circleci/node:8-browsers
 
 jobs:
+  build:
+    docker:
+      - image: circleci/node:8-browsers
+    working_directory: ~/react-rxloop
+
   install:
     <<: *defaults
     steps:
