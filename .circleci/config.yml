@@ -46,6 +46,7 @@ jobs:
           name: Running Unit Tests
           command: |
             yarn test
+
   test-cover:
     <<: *defaults
     steps:
