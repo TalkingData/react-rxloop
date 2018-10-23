@@ -67,10 +67,10 @@ workflows:
       - build
       - test-cover:
           requires:
-            - install
+            - build
       - lint-types:
           requires:
-            - install
+            - build
       - test-unit:
           requires:
-            - install
+            - build
