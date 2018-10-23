@@ -10,7 +10,7 @@ Performant and flexible.
 [npm-url]: https://npmjs.org/package/react-rxloop
 [download-image]: https://img.shields.io/npm/dm/react-rxloop.svg?style=shield&colorB=brightgreen
 [download-url]: https://npmjs.org/package/react-rxloop
-[build-status-image]: https://circleci.com/gh/TalkingData/react-rxloop/tree/master.png?style=shield&colorB=brightgreen
+[build-status-image]: https://circleci.com/gh/TalkingData/react-rxloop/tree/master.png?style=shield
 [build-status-url]: https://circleci.com/gh/TalkingData/react-rxloop
 [codecov-image]: https://img.shields.io/codecov/c/github/TalkingData/react-rxloop/master.svg?style=shield&colorB=brightgreen
 [codecov-url]: https://codecov.io/github/TalkingData/react-rxloop?branch=master
