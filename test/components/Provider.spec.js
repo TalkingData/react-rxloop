@@ -211,12 +211,6 @@ describe('React', () => {
   })
 
   it('should pass state consistently to mapState', () => {
-    function stringBuilder(prev = '', action) {
-      return action.type === 'APPEND'
-        ? prev + action.body
-        : prev
-    }
-
     const store = createStore({
       APPEND(prev, action) {
         return action.type === 'test/APPEND'

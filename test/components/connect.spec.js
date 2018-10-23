@@ -1495,7 +1495,6 @@ describe('React', () => {
     })
 
     it('should persist listeners through hot update', () => {
-      const ACTION_TYPE = "ACTION"
       const store = createStore(
         {
           ACTION(state) {
