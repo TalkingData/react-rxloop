@@ -4,14 +4,14 @@ React Rxloop
 Official React bindings for [rxloop](https://github.com/TalkingData/rxloop).  
 Performant and flexible.
 
-# rxloop [![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![Build Status][build-status-image]][build-status-url] [![codecov status][codecov-image]][codecov-url] [![license][license-image]][license-url]
+# rxloop [![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![Build Status][build-image]][build-url] [![codecov status][codecov-image]][codecov-url] [![license][license-image]][license-url]
 
 [npm-image]: https://img.shields.io/npm/v/react-rxloop.svg?style=shield&colorB=brightgreen
 [npm-url]: https://npmjs.org/package/react-rxloop
 [download-image]: https://img.shields.io/npm/dm/react-rxloop.svg?style=shield&colorB=brightgreen
 [download-url]: https://npmjs.org/package/react-rxloop
-[build-status-image]: https://circleci.com/gh/TalkingData/react-rxloop/tree/master.png?style=shield
-[build-status-url]: https://circleci.com/gh/TalkingData/react-rxloop
+[build-image]: https://circleci.com/gh/TalkingData/react-rxloop/tree/master.png?style=shield
+[build-url]: https://circleci.com/gh/TalkingData/react-rxloop
 [codecov-image]: https://img.shields.io/codecov/c/github/TalkingData/react-rxloop/master.svg?style=shield&colorB=brightgreen
 [codecov-url]: https://codecov.io/github/TalkingData/react-rxloop?branch=master
 [license-image]: https://img.shields.io/npm/l/react-rxloop.svg?style=shield&colorB=brightgreen&longCache=true
